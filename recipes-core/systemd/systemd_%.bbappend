@@ -1,13 +1,9 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/systemd:"
 
-SRC_URI += "file://autologin.conf"
+SRC_URI += "file://25-wlan.network"
 
 do_install:append() {
-    install -d ${D}${sysconfdir}/systemd/system/getty@tty1.service.d/
-    install -m 0644 ${WORKDIR}/autologin.conf \
-        ${D}${sysconfdir}/systemd/system/getty@tty1.service.d/autologin.conf
-
-    install -d ${D}${sysconfdir}/systemd/system/getty.target.wants/
-    ln -sf /lib/systemd/system/getty@.service \
-        ${D}${sysconfdir}/systemd/system/getty.target.wants/getty@tty1.service
+    # La directory corretta per i file network di systemd-networkd
+    install -d ${D}${sysconfdir}/systemd/network/
+    install -m 0644 ${WORKDIR}/25-wlan.network ${D}${sysconfdir}/systemd/network/
 }
